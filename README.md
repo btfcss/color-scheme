@@ -107,9 +107,8 @@ colorScheme.addEventListenerOnChange((status) => {
     document.querySelector(':root').style.setProperty('color-scheme', status.user);
 
     // Log new status in console
-    console.log ('User choice', status.user)
-    console.log ('Current scheme', status.current)
-
+    console.log ('User choice', status.user);
+    console.log ('Current scheme', status.current);
 }));
 ```
 
