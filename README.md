@@ -21,7 +21,7 @@ Note that this package does not update CSS, but a callback function can be trigg
 
 
 
-[![Animation showing the system color scheme manager](/images/color-scheme.gif)](https://www.youtube.com/watch?v=PnN5bA45lsU)
+[![Animation showing the system color scheme manager](/images/color-scheme.gif)](https://youtu.be/4t21iBqSLeI)
 
 
 ## Install 

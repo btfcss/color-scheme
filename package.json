@@ -1,6 +1,6 @@
 {
   "name": "@btfcss/color-scheme",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Color Scheme (Light/Dark mode) manager for front-end JavaScript (user preference / system preference)",
   "main": "index.js",
   "scripts": {
