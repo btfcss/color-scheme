@@ -1,11 +1,13 @@
 # color-scheme
 
+
 This npm package manages color scheme (Light/Dark mode) for front-end application (user preference / system preference). 
 The color scheme setting is done in the following priority order:
 1. local storage (keep track of previous user choice)
 2. user preference
 3. browser settings
 4. system settings
+
 
 We recommend using the `color-scheme` CSS property, for example : 
 
@@ -16,6 +18,11 @@ We recommend using the `color-scheme` CSS property, for example :
 ```
 
 Note that this package does not update CSS, but a callback function can be triggered on color scheme change. Update your CSS in this function. 
+
+
+
+[![Animation showing the system color scheme manager](/images/color-scheme.gif)](https://www.youtube.com/watch?v=PnN5bA45lsU)
+
 
 ## Install 
 
@@ -39,7 +46,7 @@ The function `getUserChoice()` returns the current user choice:
 - `"dark"` : dark mode
 
 
-If user choice has never been set, check if a previous choice has been recorded in local storage, otherwise the library set system settings (`"light dark"`) as default
+If user choice has never been set, check if a previous choice has been recorded in local storage, otherwise the library set system settings (`"light dark"`) as default.
 
 ``` js
 // Should display "light", "light dark" or "dark"
@@ -73,7 +80,7 @@ console.log (colorScheme.getCurrent()}
 
 ### Get Current Status
 
-The function `get()` returns an object containing the current color scheme status
+The function `get()` returns an object containing the current color scheme status:
  * `status.user` - The user's choice `["light" | "light dark" | " dark"]`
  * `status.current` - The page color scheme `["light" | " dark"]`
  
@@ -85,7 +92,7 @@ console.log (colorScheme.getCurrent()}
 
 ## Set New User Choice
 
-When the user selects a new color scheme from the interface, you have to call the `setUserChoice(newChoice)` fonction. The function expects a string as parameter. The value of the string must be one of the following :
+When the user selects a new color scheme from the interface, you have to call the `setUserChoice(newChoice)` fonction. The function expects a string as parameter. The value of the string must be one of the following:
 - `"light"` : set light mode
 - `"light dark"` : set system settings
 - `"dark"` : set dark mode
@@ -95,7 +102,9 @@ This function does not update the CSS, but dispatches an event that will trigger
 
 ## Listen for Change
 
-The `addEventListenerOnChange(callback)` set a callback function that will be called when the page color scheme changes. It may be through the function `setUserChoice()` or because the user choice is set to system (`"light dark"`) and system settings has changed. 
+The `addEventListenerOnChange(callback)` set a callback function that will be called when the page color scheme changes. Changes may occurs 
+- because the function `setUserChoice()` has been called 
+- or because the user choice is set to system (`"light dark"`) and system settings has changed. 
 
 The callback function receives the new object status as parameter :
  * `status.user` - The user's choice `["light" | "light dark" | " dark"]`
@@ -114,3 +123,64 @@ colorScheme.addEventListenerOnChange((status) => {
 
 
 
+## Full Example
+
+This full example can be tested online in [CodeSandBox](https://codesandbox.io/p/sandbox/color-scheme-yh97d3).
+### HTML
+
+``` html
+<h1>Color Scheme Manager</h1>
+Select color scheme :
+<select id="color-scheme-selector">
+    <option value="light">Light</option>
+    <option value="light dark" selected>System</option>
+    <option value="dark">Dark</option>
+</select>
+```
+
+### CSS
+
+```css
+:root {
+  color-scheme: light dark;
+}
+
+* {
+  font-family: sans-serif;
+  color: light-dark(#000, #fff);
+  background-color: light-dark(#fff, #000);
+}
+```
+
+
+### JavaSCript
+
+``` js
+import "./styles.css";
+import colorScheme from "@btfcss/color-scheme";
+
+// Get the selector element
+const selector = document.getElementById("color-scheme-selector");
+
+// When the selector changes
+selector.addEventListener("change", () => {
+  colorScheme.setUserChoice(selector.value);
+});
+
+// Callback function
+function onChange(status) {
+  // On change, set the new CSS color scheme
+  document
+    .querySelector(":root")
+    .style.setProperty("color-scheme", status.user);
+
+  // Update the selector according to user choice
+  selector.value = status.user;
+}
+
+// Listen color scheme changes
+colorScheme.addEventListenerOnChange(onChange);
+
+// Call at start up for applying user preferences
+onChange(colorScheme.get());
+```
